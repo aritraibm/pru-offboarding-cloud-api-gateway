@@ -1,0 +1,64 @@
+server:
+  port: 9191
+  
+spring:
+  application:
+    name: API-GATEWAY
+  config:
+        activate:
+            on-profile: dev
+        import: optional:configserver:http://localhost:9296/
+#  main:
+#    web-application-type: reactive
+#    allow-bean-definition-overriding: true
+  cloud:
+    gateway:
+      routes:
+      - id: ASSOCIATE-SERVICE
+        uri: lb://ASSOCIATE-SERVICE
+        predicates:
+        - Path=/pru-associate/**
+      - id: SKILL-SERVICE
+        uri: lb://SKILL-SERVICE
+        predicates:
+        - Path=/pru-skill/**
+      - id: ONBOARDING-TASK
+        uri: lb://ONBOARDING-TASK
+        predicates:
+        - Path=/task/** , /onboarding_checklist/** , /get-token
+      - id: FILEMANAGER-SERVICE
+        uri: lb://FILEMANAGER-SERVICE
+        predicates:
+        - Path=/delete/**,downloadFile/**,uploadFile/**
+      - id: TOKEN-SERVICE
+        uri: lb://TOKEN-SERVICE
+        predicates:
+        - Path=/auth/login/**,/users,/products,
+
+management:
+  endpoint:
+    restart:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+#eureka:
+#  instance:
+#    hostname: ${vcap.application.uris[0]:10.5.0.5}
+#    prefer-ip-address: true
+#    lease-renewal-interval-in-seconds: 10
+#    lease-expiration-duration-in-seconds: 20
+#  client:
+#    serviceUrl:
+#      defaultZone: http://10.5.0.5:8761/eureka
+#eureka:
+#  client:
+#    register-with-eureka: true
+#    fetch-registry: true
+#    service-url: 
+#      defaultZone: http://localhost:8761/eureka/
+#  instance:
+#    hostname: localhost
+   
+  
