@@ -1,0 +1,55 @@
+server:
+  port: 9191
+
+spring:
+  application:
+    name: OFFBOARD-GATEWAY
+  config:
+    import: optional:configserver:http://${CNF}:9296/
+  main:
+    web-application-type: reactive
+  cloud:
+    gateway:
+      default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials, RETAIN_UNIQUE
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allowedHeaders: "*"
+            allowedMethods: "*"
+      routes:
+        - id: token-service
+          uri: http://${TOKN}:9099
+          predicates:
+            - Path= /user/**, /loginuser/**, /logout/**, /actuator/**
+          filters:
+            - AuthenticationFilter
+
+        - id: task-service
+          uri: http://${TASK}:9094
+          predicates:
+            - Path=/task/**, /offboarding_checklist/**, /comment/**, /recording/**, /summary/**, /training/**, /actuator/**
+          filters:
+            - AuthenticationFilter
+
+        - id: associate-service
+          uri: http://${ASC}:9092
+          predicates:
+            - Path=/pru-associate/** , /date-filter/**, /actuator/**
+          filters:
+            - AuthenticationFilter
+
+        - id: skill-service
+          uri: http://${SKI}:9091
+          predicates:
+            - Path=/pru-skill/**, /actuator/**
+          filters:
+            - AuthenticationFilter
+
+        - id: filemanager-service
+          uri: http://${FIM}:9003
+          predicates:
+            - Path= /document ,/document/** , /delete/** , /files/**, /files, /actuator/**
+          filters:
+            - AuthenticationFilter

@@ -1,0 +1,15 @@
+spring:
+  profiles:
+    active: local
+  cloud:
+    config:
+      enabled: true
+      uri: http://${CNF}:9296
+
+#spring:
+#  profiles:
+#    active: dev
+#  cloud:
+#    config:
+#      enabled: true
+#      uri: http://localhost:9296
