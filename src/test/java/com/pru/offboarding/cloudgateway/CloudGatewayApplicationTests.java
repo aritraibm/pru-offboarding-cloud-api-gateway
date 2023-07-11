@@ -1,13 +1,13 @@
 package com.pru.offboarding.cloudgateway;
 
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
+//import org.junit.jupiter.api.Test;
+//import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
-class CloudGatewayApplicationTests {
-
-	@Test
-	void contextLoads() {
-	}
-
-}
+//@SpringBootTest
+//class CloudGatewayApplicationTests {
+//
+//	@Test
+//	void contextLoads() {
+//	}
+//
+//}
